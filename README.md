@@ -20,6 +20,8 @@ You can install them by running:
 pip install -r requirements.txt
 ```
 
+In addition to them, you will need the Chrome Web Driver for Selenium to work. You can find it [here](https://googlechromelabs.github.io/chrome-for-testing/).
+
 ## Usage
 
 ```
