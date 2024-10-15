@@ -54,9 +54,21 @@ if not os.path.exists(directory):
 
 total = len(images_elements)
 
+paths = []
+duplicates = 1
+
 for count, image_element in enumerate(images_elements):
     print(f"Saving image {count + 1}/{total}...")
     image_source = image_element.attrs["src"]
     image_alt = image_element.attrs["alt"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
     image_extension = image_source.split(".")[-1]
-    urllib.request.urlretrieve(image_source, f"{directory}/{image_alt}.{image_extension}")
+    path = f"{directory}/{image_alt}.{image_extension}"
+    if path not in paths:
+        print("SS")
+        urllib.request.urlretrieve(image_source, path)
+    else:
+        image_alt = image_alt + f" ({duplicates})"
+        path = f"{directory}/{image_alt}.{image_extension}"
+        urllib.request.urlretrieve(image_source, path)
+        duplicates = duplicates + 1
+    paths.append(path)
