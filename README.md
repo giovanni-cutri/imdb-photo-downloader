@@ -8,7 +8,7 @@ Images are saved in a folder with the name of the person / movie the photos are 
 
 You can install the tool by downloading the release binary (currently available only for Windows):
 
-[imdb-photo-downloader.exe](https://github.com/giovanni-cutri/imdb-photo-downloader/releases/download/latest/imdb.exe)
+[imdb.exe](https://github.com/giovanni-cutri/imdb-photo-downloader/releases/download/latest/imdb.exe)
 
 ## Dependencies
 
@@ -25,7 +25,7 @@ In addition to them, you will need the Chrome Web Driver for Selenium to work. Y
 ## Usage
 
 ```
-imdb-photo-downloader [url]
+imdb [url]
 ```
 
 Replace *[url]* with the URL of the IMDb page of which you want to download the photos.
