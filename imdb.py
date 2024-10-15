@@ -64,7 +64,6 @@ for count, image_element in enumerate(images_elements):
     image_extension = image_source.split(".")[-1]
     path = f"{directory}/{image_alt}.{image_extension}"
     if path not in paths:
-        print("SS")
         urllib.request.urlretrieve(image_source, path)
     else:
         image_alt = image_alt + f" ({duplicates})"
