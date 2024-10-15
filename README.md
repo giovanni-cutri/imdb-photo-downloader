@@ -8,7 +8,7 @@ Images are saved in a folder with the name of the person / movie the photos are 
 
 You can install the tool by downloading the release binary (currently available only for Windows):
 
-[imdb-photo-downloader.exe](https://github.com/giovanni-cutri/italian-disney-comics-covers/releases/download/first/disney-comics-covers.exe)
+[imdb-photo-downloader.exe](https://github.com/giovanni-cutri/imdb-photo-downloader/releases/download/latest/imdb.exe)
 
 ## Dependencies
 
