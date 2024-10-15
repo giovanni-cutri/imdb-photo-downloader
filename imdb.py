@@ -15,6 +15,9 @@ parser.add_argument("url", help="the url of the page of which you want to downlo
 args = parser.parse_args()
 url = args.url
 
+if "mediaindex" not in url:
+    url = url.rstrip("/") + "/mediaindex"
+
 driver.get(url)
 
 last_height = driver.execute_script("return document.body.scrollHeight")
