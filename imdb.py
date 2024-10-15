@@ -24,7 +24,7 @@ last_height = driver.execute_script("return document.body.scrollHeight")
 
 while True:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(2)
+    time.sleep(10)
     new_height = driver.execute_script("return document.body.scrollHeight")
     
     if new_height == last_height:
@@ -44,10 +44,12 @@ images_elements = soup.select(".ipc-image.sc-f1b78590-1.sLhej")
 
 if "name" in url:
     type = "people"
+    code = url.split("name/")[-1].split("/")[0]
 else:
     type = "movies"
+    code = url.split("title/")[-1].split("/")[0]
 
-directory = f"images/{type}/{title}"
+directory = f"images/{type}/{title} ({code})"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
