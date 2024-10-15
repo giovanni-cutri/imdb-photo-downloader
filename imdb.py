@@ -51,7 +51,7 @@ if not os.path.exists(directory):
 
 total = len(images_elements)
 
-for count, image_element in enumerate(images_elements[:2]):
+for count, image_element in enumerate(images_elements):
     print(f"Saving image {count + 1}/{total}...")
     image_source = image_element.attrs["src"]
     image_alt = image_element.attrs["alt"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
