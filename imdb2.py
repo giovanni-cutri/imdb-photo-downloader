@@ -5,6 +5,7 @@ import time
 import bs4
 import os
 import urllib.request
+import json
 
 service = Service()
 options = webdriver.ChromeOptions()
@@ -24,7 +25,7 @@ last_height = driver.execute_script("return document.body.scrollHeight")
 
 while True:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(10)
+    time.sleep(30)
     new_height = driver.execute_script("return document.body.scrollHeight")
     
     if new_height == last_height:
@@ -38,18 +39,19 @@ driver.quit()
 
 soup = bs4.BeautifulSoup(source_code, "lxml")
 
-title = soup.select("title")[0].getText().split(" - Foto - IMDb")[0]
-
 images_elements = soup.select(".ipc-image.sc-f1b78590-1.sLhej")
 
 if "name" in url:
     type = "people"
+    title = soup.select("title")[0].getText().split(" - Foto - IMDb")[0]
     code = url.split("name/")[-1].split("/")[0]
 else:
     type = "movies"
+    script_element = soup.select("#__NEXT_DATA__")[0].getText()
+    title = json.loads(script_element)["props"]["pageProps"]["contentData"]["entityMetadata"]["originalTitleText"]["text"] + " (" + str(json.loads(script_element)["props"]["pageProps"]["contentData"]["entityMetadata"]["releaseYear"]["year"]) + ")"
     code = url.split("title/")[-1].split("/")[0]
 
-directory = f"images/{type}/{title} ({code})"
+directory = f"images/{type}/{title} - {code}"
 
 if not os.path.exists(directory):
     os.makedirs(directory)
@@ -63,7 +65,7 @@ image_sources = []
 for count, image_element in enumerate(images_elements):
     print(f"Saving image {count + 1}/{total}...")
     image_source = image_element.attrs["src"].rsplit("@", 1)[0] + "@._V1_." + image_element.attrs["src"].split(".")[-1]
-    image_alt = image_element.attrs["alt"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
+    image_alt = image_element.parent.attrs["href"].split("mediaviewer/")[-1].split("/")[0]
     image_extension = image_source.split(".")[-1]
     path = f"{directory}/{image_alt}.{image_extension}"
     '''if path not in paths:
