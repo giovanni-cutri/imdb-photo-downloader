@@ -34,13 +34,11 @@ while True:
 
 source_code = driver.page_source
 
-driver.quit()
-
 soup = bs4.BeautifulSoup(source_code, "lxml")
 
 title = soup.select("title")[0].getText().split(" - Foto - IMDb")[0]
 
-images_elements = soup.select(".ipc-image.sc-f1b78590-1.sLhej")
+images_elements = soup.select("a[id*='-img-']")
 
 if "name" in url:
     type = "people"
@@ -58,12 +56,21 @@ total = len(images_elements)
 
 paths = []
 duplicates = 1
+original_window = driver.current_window_handle
 
 for count, image_element in enumerate(images_elements):
     print(f"Saving image {count + 1}/{total}...")
-    image_source = image_element.attrs["src"].split("QL75_")[0] + "QL75_UX10000_.jpg"
-    image_alt = image_element.attrs["alt"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
+    driver.execute_script("window.open('');")
+    time.sleep(1)
+    new_window = [window for window in driver.window_handles if window != original_window][0]
+    driver.switch_to.window(new_window)
+    driver.get("https://www.imdb.com" + image_element.attrs["href"])
+    soup_image = bs4.BeautifulSoup(driver.page_source, "lxml")
+    image_source = soup_image.select("meta[property='og:image']")[0].attrs["content"].rsplit("@", 1)[0] + "@._V1_." + soup_image.select("meta[property='og:image']")[0].attrs["content"].split(".")[-1]
+    image_alt = soup_image.select("meta[property='og:description']")[0].attrs["content"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
     image_extension = image_source.split(".")[-1]
+    driver.close()
+    driver.switch_to.window(original_window)
     path = f"{directory}/{image_alt}.{image_extension}"
     if path not in paths:
         urllib.request.urlretrieve(image_source, path)
@@ -73,3 +80,5 @@ for count, image_element in enumerate(images_elements):
         urllib.request.urlretrieve(image_source, path)
         duplicates = duplicates + 1
     paths.append(path)
+
+driver.quit()
