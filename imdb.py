@@ -61,7 +61,7 @@ duplicates = 1
 
 for count, image_element in enumerate(images_elements):
     print(f"Saving image {count + 1}/{total}...")
-    image_source = image_element.attrs["src"]
+    image_source = image_element.attrs["src"].split("QL75_")[0] + "QL75_UX10000_.jpg"
     image_alt = image_element.attrs["alt"].replace("?", "").replace("?", "").replace("/", "").replace(":", "").replace('"', '').replace(".", "")
     image_extension = image_source.split(".")[-1]
     path = f"{directory}/{image_alt}.{image_extension}"
