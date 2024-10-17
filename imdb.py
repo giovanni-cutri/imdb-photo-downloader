@@ -35,6 +35,10 @@ while True:
 
 source_code = driver.page_source
 
+driver.get(url.split("/mediaindex")[0])
+time.sleep(2)
+source_name = driver.page_source
+
 driver.quit()
 
 soup = bs4.BeautifulSoup(source_code, "lxml")
@@ -43,7 +47,8 @@ images_elements = soup.select(".ipc-image.sc-f1b78590-1.sLhej")
 
 if "name" in url:
     type = "people"
-    title = soup.select("title")[0].getText().split(" - Foto - IMDb")[0]
+    soup_name = bs4.BeautifulSoup(source_name, "lxml")
+    title = soup_name.select("span[data-testid='hero__primary-text']")[0].getText() + " " + soup_name.select("span[data-testid='hero__primary-text-suffix']")[0].getText()
     code = url.split("name/")[-1].split("/")[0]
 else:
     type = "movies"
